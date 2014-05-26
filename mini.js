@@ -44,26 +44,49 @@ var miniQ, _;
 		
 		//metodos
 		css: function(property, value){
+			
 			for (var i = 0; i < this.length; i++){
-				if(this[i].style.hasOwnProperty(property)){
-					// getter
-					if(arguments.length == 1){
-						return this[i].style[property];
-					} else { //setter
-						this[i].style[property] = value;
-					}
+				
+				if( typeof arguments[0] == 'object'){
 					
-				}				
+					for (var propiedad in arguments[0]){
+						console.log(propiedad, arguments[0][propiedad]);
+						this[i].style[propiedad] = arguments[0][propiedad];
+					}
+				}
+				// getter
+				else if(arguments[1] === undefined){
+					
+					return this[i].style[property];
+
+				} else { //setter
+					this[i].style[property] = value;
+				}
+					
+								
 			}
 			return this;
 		},
 		attr: function(attribute, value){
+			
 			for(var i = 0; i < this.length; i++){
-				//getter
-				if(arguments.length == 1){
-					return this[i].getAttribute(attribute);
+				// json setter
+				if( typeof arguments[0] == 'object'){
+					
+					for (var propiedad in arguments[0]){
+						console.log(propiedad, arguments[0][propiedad]);
+						this[i].setAttribute(propiedad, arguments[0][propiedad]);
+					}
 				}
-				this[i].setAttribute(attribute, value);
+				// getter
+				else if(arguments[1] == undefined){
+					return this[i].getAttribute(attribute);
+				} 
+				// setter
+				else{
+					this[i].setAttribute(attribute, value);
+				}
+				
 				
 			}
 			return this;
