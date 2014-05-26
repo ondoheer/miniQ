@@ -46,14 +46,23 @@ var miniQ, _;
 		css: function(property, value){
 			for (var i = 0; i < this.length; i++){
 				if(this[i].style.hasOwnProperty(property)){
+					// getter
+					if(arguments.length == 1){
+						return this[i].style[property];
+					} else { //setter
+						this[i].style[property] = value;
+					}
 					
-					this[i].style[property] = value;
 				}				
 			}
 			return this;
 		},
 		attr: function(attribute, value){
 			for(var i = 0; i < this.length; i++){
+				//getter
+				if(arguments.length == 1){
+					return this[i].getAttribute(attribute);
+				}
 				this[i].setAttribute(attribute, value);
 				
 			}
