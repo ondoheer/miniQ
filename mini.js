@@ -90,14 +90,14 @@ var miniQ, _;
         },
 
         // hides the element with display none
-        hide: function(){
-            for (var i = 0; i < this.length; i++){
+        hide: function() {
+            for (var i = 0; i < this.length; i++) {
                 this[i].style.display = 'none';
             }
             return this;
         },
-        show: function(){
-            for (var i = 0; i < this.length; i++){
+        show: function() {
+            for (var i = 0; i < this.length; i++) {
                 this[i].style.display = '';
             }
             return this;
@@ -145,88 +145,120 @@ var miniQ, _;
         },
 
         // adds element passed as a child of the targetet element
-        append: function(element){
-            for (var i = 0; i < this.length; i++){
+        append: function(element) {
+            for (var i = 0; i < this.length; i++) {
                 this[i].appendChild(element);
             }
             return this;
         },
         // prepends an element to every passed elements
-        prepend: function(element){
-            for (var i = 0; i < this.length; i++){
+        prepend: function(element) {
+            for (var i = 0; i < this.length; i++) {
                 this[i].insertBefore(element, this[i].firstChild);
             }
             return this;
         },
         //removes element
-        remove: function(){
-            for (var i = 0; i < this.length; i++){
+        remove: function() {
+            for (var i = 0; i < this.length; i++) {
                 this[i].parentNode.removeChild(this[i]);
             }
             return this;
         },
 
         // returns all elements of the matching tag, class or id without miniQ properties
-        find: function(element){
+        find: function(element) {
             return document.querySelectorall(element);
         },
         // returns an array of iner HTML of the selected elements
-        inner: function(){
+        inner: function() {
             var items = [];
-            for (var i = 0; i < this.length; i++){
+            for (var i = 0; i < this.length; i++) {
                 items.push(this[i].innerHTML);
             }
             return items;
         },
         // returns an array of the text contained in the selected elements
-        text: function(text){
-            if (arguments.length == 0){
+        text: function(text) {
+            if (arguments.length == 0) {
                 var items = [];
-                for (var i = 0; i < this.length; i++){
+                for (var i = 0; i < this.length; i++) {
                     items.push(this[i].textContent);
                 }
                 return items;
             } else {
-                for (var i = 0; i < this.length; i++){
+                for (var i = 0; i < this.length; i++) {
                     this[i].textContent = text;
                 }
             }
-            
+
         },
         //returns true is both elements are the same
-        same: function(toMatch){
+        same: function(toMatch) {
             return this[0] === toMatch;
         },
         // returns  parent
-        parent: function(){
-            
+        parent: function() {
+
             return this[0].parentNode;
         },
         //returns top and left offset positions
-        position: function(){
+        position: function() {
             var items = [];
-            for (var i = 0; i < this.length; i++){
-                items.push({left: this[i].offsetLeft, top: this[i].offsetTop});
+            for (var i = 0; i < this.length; i++) {
+                items.push({
+                    left: this[i].offsetLeft,
+                    top: this[i].offsetTop
+                });
             }
             return items;
         },
         // remove event
-        removeEvt: function(event, handler){
-            for (var i = 0; i < this.length; i++){
+        removeEvt: function(event, handler) {
+            for (var i = 0; i < this.length; i++) {
                 this[i].removeEventListener(event, handler);
             }
         },
         //add event
-        addEvt: function(event, handler){
-            for (var i = 0; i < this.length; i++){
+        addEvt: function(event, handler) {
+            for (var i = 0; i < this.length; i++) {
                 this[i].addEventListener(event, handler);
             }
         },
-        
+        // binds itself to a form element by it's ID
+        // sending it's post data to a specified route
+        // takes a handler for the responseText and 
+        // a 4th parameter for async conection, it defaults to true.
+        POST: function(element, route, handler, async) {
+            var xhr = new XMLHttpRequest();
+            formData = new FormData(document.getElementById(element));
+            xhr.addEventListener('load', function() {
+                if (handler) {
+                    handler(xhr.responseText);
+                }
+            });
+            if (!async) {
+                var async = true;
+            }
+            xhr.open('POST', route, async);
+            xhr.send(formData);
+        },
+        GET: function(element, route, handler, async) {
+            var xhr = new XMLHttpRequest();
+            xhr.addEventListener('load', function() {
+                if (handler) {
+                    handler(xhr.responseText);
+                }
+            });
+            if (!async) {
+                var async = true;
+            }
+            xhr.open('GET', route, async);
+            xhr.send();
+        }
 
 
 
-        
 
     };
-}());
+})();
