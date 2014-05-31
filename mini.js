@@ -75,16 +75,30 @@ var miniQ, _;
                         this[i].style[propiedad] = arguments[0][propiedad];
                     }
                 }
-                // else if onnly one parameter was passed it's a getter
+                // else if only one parameter was passed it's a getter
                 else if (arguments[1] === undefined) {
 
-                    return this[i].style[property];
+                    return this[i].getComputedStyle[property];
 
                 } else { //setter
                     this[i].style[property] = value;
                 }
 
 
+            }
+            return this;
+        },
+
+        // hides the element with display none
+        hide: function(){
+            for (var i = 0; i < this.length; i++){
+                this[i].style.display = 'none';
+            }
+            return this;
+        },
+        show: function(){
+            for (var i = 0; i < this.length; i++){
+                this[i].style.display = '';
             }
             return this;
         },
@@ -120,14 +134,99 @@ var miniQ, _;
 
         // creates a miniQ object of this object next sibling
         next: function() {
-
+            var next = this[0].nextElementSibling;
+            next.prototype = miniQ.prototype;
             return miniQ(this[0].nextElementSibling);
         },
 
         //creates a miniQ object of this object previous sibling
         prev: function() {
             return miniQ(this[0].previousElementSibling);
-        }
+        },
+
+        // adds element passed as a child of the targetet element
+        append: function(element){
+            for (var i = 0; i < this.length; i++){
+                this[i].appendChild(element);
+            }
+            return this;
+        },
+        // prepends an element to every passed elements
+        prepend: function(element){
+            for (var i = 0; i < this.length; i++){
+                this[i].insertBefore(element, this[i].firstChild);
+            }
+            return this;
+        },
+        //removes element
+        remove: function(){
+            for (var i = 0; i < this.length; i++){
+                this[i].parentNode.removeChild(this[i]);
+            }
+            return this;
+        },
+
+        // returns all elements of the matching tag, class or id without miniQ properties
+        find: function(element){
+            return document.querySelectorall(element);
+        },
+        // returns an array of iner HTML of the selected elements
+        inner: function(){
+            var items = [];
+            for (var i = 0; i < this.length; i++){
+                items.push(this[i].innerHTML);
+            }
+            return items;
+        },
+        // returns an array of the text contained in the selected elements
+        text: function(text){
+            if (arguments.length == 0){
+                var items = [];
+                for (var i = 0; i < this.length; i++){
+                    items.push(this[i].textContent);
+                }
+                return items;
+            } else {
+                for (var i = 0; i < this.length; i++){
+                    this[i].textContent = text;
+                }
+            }
+            
+        },
+        //returns true is both elements are the same
+        same: function(toMatch){
+            return this[0] === toMatch;
+        },
+        // returns  parent
+        parent: function(){
+            
+            return this[0].parentNode;
+        },
+        //returns top and left offset positions
+        position: function(){
+            var items = [];
+            for (var i = 0; i < this.length; i++){
+                items.push({left: this[i].offsetLeft, top: this[i].offsetTop});
+            }
+            return items;
+        },
+        // remove event
+        removeEvt: function(event, handler){
+            for (var i = 0; i < this.length; i++){
+                this[i].removeEventListener(event, handler);
+            }
+        },
+        //add event
+        addEvt: function(event, handler){
+            for (var i = 0; i < this.length; i++){
+                this[i].addEventListener(event, handler);
+            }
+        },
+        
+
+
+
+        
 
     };
 }());
